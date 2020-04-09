@@ -35,6 +35,14 @@ set hlsearch " highlight search results
 set expandtab " turn tabs into spaces
 set autoindent
 
+" Give more space for displaying messages
+
+set cmdheight=2
+" delay completion update to reduce overhead
+set updatetime=300
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
 hi Search cterm=None ctermfg=black ctermbg=yellow
 
 " <Ctrl-l> redraw the screen and removes any search highlighting.
@@ -82,6 +90,23 @@ inoremap <silent><expr> <TAB>
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+function! s:check_back_space() abort
+	  let col = col('.') - 1
+	    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+
+Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at
+" current
+
+" position. Coc only does snippet and additional edit on confirm.
+if exists('*complete_info')
+    inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+    imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
 
 " Cariage return to select function 
 if has('patch8.1.1068')
@@ -89,6 +114,19 @@ if has('patch8.1.1068')
 else
     imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+	if (index(['vim','help'], &filetype) >= 0)
+	      execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Add `:Format` command to format current buffer. 
 command! -nargs=0 Format :call CocAction('format')
@@ -126,5 +164,4 @@ let g:neovide_cursor_antialiasing=v:true
 let g:neovide_cursor_vfx_mode = "ripple"
 
 " Rust plugin
-
 let g:rustfmt_autosave = 1
