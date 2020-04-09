@@ -80,6 +80,7 @@ set guifont=Liberation\ Mono:h16
 au VimEnter * NERDTreeToggle c:\workspace
 
 
+" COC configuration 
 
 " Use tab for trigger completion with characters ahead and navigate. " NOTE:
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by " other
@@ -136,6 +137,18 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+" COC Configuration END
+
+" Rempaping copy to register * ( system clipboard )  to Ctrl-c
+vnoremap <C-c> "*y
+" Past from clipboard keep format
+map <silent><Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
+map <silent><Leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
+
+" Maping Ctrl-p to files fuzzy search
+map <silent><C-p> :Files<cr>
+
 
 :cd C:\\workspace
 
