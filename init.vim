@@ -10,6 +10,7 @@ Plug 'airblade/vim-rooter'
 Plug 'preservim/nerdtree'
 Plug 'chriskempson/base16-vim'
 Plug 'rust-lang/rust.vim'
+Plug 'ntk148v/vim-horizon'
 
 function! BuildYCM(info)
   " info is a dictionary with 3 fields
@@ -192,7 +193,8 @@ au VimEnter * NERDTreeToggle c:\workspace
 
 :cd C:\\workspace
 
-" Vim rooter configuration
+" Support for terminal true color
+set termguicolors
 
 
 " Use git database as pattern to find root directory
